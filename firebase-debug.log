@@ -1,0 +1,45 @@
+[debug] [2025-11-16T09:13:01.600Z] ----------------------------------------------------------------------
+[debug] [2025-11-16T09:13:01.602Z] Command:       C:\nvm4w\nodejs\node.exe C:\Users\lovpa\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2025-11-16T09:13:01.603Z] CLI Version:   14.25.0
+[debug] [2025-11-16T09:13:01.603Z] Platform:      win32
+[debug] [2025-11-16T09:13:01.603Z] Node Version:  v22.20.0
+[debug] [2025-11-16T09:13:01.603Z] Time:          Sun Nov 16 2025 14:43:01 GMT+0530 (India Standard Time)
+[debug] [2025-11-16T09:13:01.603Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-16T09:13:01.773Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-16T09:13:01.773Z] > authorizing via signed-in user (lovpankaj@gmail.com)
+[info] i  emulators: Starting emulators: functions, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions, extensions"}}
+[debug] [2025-11-16T09:13:01.777Z] Checked if tokens are valid: true, expires at: 1763287039193
+[debug] [2025-11-16T09:13:01.777Z] Checked if tokens are valid: true, expires at: 1763287039193
+[debug] [2025-11-16T09:13:01.778Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/dialiq-474815 [none]
+[debug] [2025-11-16T09:13:03.269Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/dialiq-474815 200
+[debug] [2025-11-16T09:13:03.269Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/dialiq-474815 {"projectNumber":"948505578281","projectId":"dialiq-474815","lifecycleState":"ACTIVE","name":"DialIQ","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2025-10-11T15:25:01.334681Z","parent":{"type":"organization","id":"554946249629"}}
+[debug] [2025-11-16T09:13:03.276Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-16T09:13:03.276Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2025-11-16T09:13:03.279Z] Emulator locator file path: C:\Users\lovpa\AppData\Local\Temp\hub-dialiq-474815.json
+[debug] [2025-11-16T09:13:03.280Z] [hub] writing locator at C:\Users\lovpa\AppData\Local\Temp\hub-dialiq-474815.json
+[debug] [2025-11-16T09:13:03.285Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2025-11-16T09:13:03.289Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-16T09:13:03.289Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-16T09:13:03.289Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-16T09:13:03.289Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2025-11-16T09:13:03.308Z] defaultcredentials: writing to file C:\Users\lovpa\AppData\Roaming\firebase\lovpankaj_gmail_com_application_default_credentials.json
+[debug] [2025-11-16T09:13:03.309Z] Setting GAC to C:\Users\lovpa\AppData\Roaming\firebase\lovpankaj_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\lovpa\\AppData\\Roaming\\firebase\\lovpankaj_gmail_com_application_default_credentials.json"}}
+[debug] [2025-11-16T09:13:03.310Z] Checked if tokens are valid: true, expires at: 1763287039193
+[debug] [2025-11-16T09:13:03.310Z] Checked if tokens are valid: true, expires at: 1763287039193
+[debug] [2025-11-16T09:13:03.310Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/dialiq-474815/adminSdkConfig [none]
+[debug] [2025-11-16T09:13:03.918Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/dialiq-474815/adminSdkConfig 200
+[debug] [2025-11-16T09:13:03.918Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/dialiq-474815/adminSdkConfig {"projectId":"dialiq-474815","databaseURL":"https://dialiq-474815-default-rtdb.firebaseio.com","storageBucket":"dialiq-474815.firebasestorage.app"}
+[debug] [2025-11-16T09:13:03.944Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "C:\Code\DialIQ-Code\scraping_test" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Code\\DialIQ-Code\\scraping_test\" for Cloud Functions..."}}
+[debug] [2025-11-16T09:13:03.950Z] Customer code is not Node
+[debug] [2025-11-16T09:13:03.950Z] Validating python source
+[debug] [2025-11-16T09:13:03.951Z] Building python source
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-11-16T09:13:03.952Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-11-16T09:13:03.955Z] Running command with virtualenv: command="C:\Code\DialIQ-Code\scraping_test\venv\Scripts\activate.bat", args=["","&&","python.exe","-c","\"import firebase_functions; import os; print(os.path.dirname(firebase_functions.__file__))\""]
+[debug] [2025-11-16T09:13:04.060Z] stdout: C:\Code\DialIQ-Code\scraping_test\venv\Lib\site-packages\firebase_functions
+
+[debug] [2025-11-16T09:13:04.069Z] Running admin server with args: ["python.exe","\"C:\\Code\\DialIQ-Code\\scraping_test\\venv\\Lib\\site-packages\\firebase_functions\\private\\serving.py\""] and env: {"GCLOUD_PROJECT":"dialiq-474815","K_REVISION":"1","PORT":"80","GOOGLE_CLOUD_QUOTA_PROJECT":"dialiq-474815","FUNCTIONS_EMULATOR":"true","TZ":"UTC","FIREBASE_DEBUG_MODE":"true","FIREBASE_DEBUG_FEATURES":"{\"skipTokenVerification\":true,\"enableCors\":true}","FIREBASE_EMULATOR_HUB":"127.0.0.1:4400","CLOUD_EVENTARC_EMULATOR_HOST":"http://127.0.0.1:9299","CLOUD_TASKS_EMULATOR_HOST":"127.0.0.1:9499","FIREBASE_CONFIG":"{\"storageBucket\":\"dialiq-474815.firebasestorage.app\",\"databaseURL\":\"https://dialiq-474815-default-rtdb.firebaseio.com\",\"projectId\":\"dialiq-474815\"}","GOOGLE_APPLICATION_CREDENTIALS":"C:\\Users\\lovpa\\AppData\\Roaming\\firebase\\lovpankaj_gmail_com_application_default_credentials.json","ADMIN_PORT":"8081"} in C:\Code\DialIQ-Code\scraping_test
+[debug] [2025-11-16T09:13:04.069Z] Running command with virtualenv: command="C:\Code\DialIQ-Code\scraping_test\venv\Scripts\activate.bat", args=["","&&","python.exe","\"C:\\Code\\DialIQ-Code\\scraping_test\\venv\\Lib\\site-packages\\firebase_functions\\private\\serving.py\""]

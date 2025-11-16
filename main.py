@@ -9,6 +9,8 @@ from routes.scraper import router as scraper_router
 from helpers.envHelper import settings
 from helpers.loggerHelper import setup_logger
 from crawl4ai import AsyncWebCrawler, BrowserConfig
+from firebase_functions import https_fn
+from firebase_admin import initialize_app
 
 # Fix for Windows asyncio and Playwright subprocess support
 if sys.platform == "win32":
@@ -67,8 +69,19 @@ def create_app() -> FastAPI:
 app = create_app()
 
 
-if __name__ == "__main__":
-    import uvicorn
+# if __name__ == "__main__":
+#     import uvicorn
 
-    logger.info(f"Starting server on {settings.host}:{settings.port}")
-    uvicorn.run(app, host=settings.host, port=settings.port)
+#     logger.info(f"Starting server on {settings.host}:{settings.port}")
+#     uvicorn.run(app, host=settings.host, port=settings.port)
+
+initialize_app()
+
+
+@https_fn.on_request()
+def api(req: https_fn.Request) -> https_fn.Response:
+    """Firebase Cloud Function entry point for FastAPI app"""
+    from mangum import Mangum
+
+    handler = Mangum(app, lifespan="off")
+    return handler(req, None)
