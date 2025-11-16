@@ -41,24 +41,30 @@ async def lifespan(app: FastAPI):
         logger.info("AsyncWebCrawler shut down successfully")
 
 
-app = FastAPI(title="Simple API", version="1.0.0", lifespan=lifespan)
+def create_app() -> FastAPI:
+    """Factory function to create and configure the FastAPI application"""
+    app = FastAPI(title="Simple API", version="1.0.0", lifespan=lifespan)
 
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    # Configure CORS
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
-# Include routers
-app.include_router(scraper_router, prefix="/v1")
+    # Include routers
+    app.include_router(scraper_router, prefix="/v1")
+
+    @app.get("/")
+    def root():
+        return {"message": "Simple API is running"}
+
+    return app
 
 
-@app.get("/")
-def root():
-    return {"message": "Simple API is running"}
+app = create_app()
 
 
 if __name__ == "__main__":
