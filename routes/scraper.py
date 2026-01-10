@@ -7,9 +7,9 @@ from pydantic import BaseModel, Field, validator
 from typing import Optional
 from helpers.scraperHelper import deep_crawl_website
 from helpers.geminiHelper import (
-    extract_clinic_data,
+    extract_business_data,
     get_gemini_client,
-    ClinicData
+    BusinessData
 )
 from helpers.loggerHelper import get_logger
 import re
@@ -60,8 +60,8 @@ class ScrapeResponse(BaseModel):
     success: bool = Field(..., description="Whether the scraping was successful")
     url: str = Field(..., description="The URL that was crawled")
     pages_crawled: int = Field(..., description="Number of pages successfully crawled")
-    data: Optional[ClinicData] = Field(
-        None, description="Extracted clinic data (null if extraction failed)"
+    data: Optional[BusinessData] = Field(
+        None, description="Extracted business data (null if extraction failed)"
     )
     error: Optional[str] = Field(None, description="Error message if unsuccessful")
 
@@ -69,21 +69,20 @@ class ScrapeResponse(BaseModel):
 @router.post("/crawl", response_model=ScrapeResponse)
 async def crawl_and_extract(scrape_request: ScrapeRequest, request: Request):
     """
-    Crawl a veterinary clinic website and extract structured data.
+    Crawl a business website and extract structured data.
 
     This endpoint:
     1. Deep crawls the provided website URL
     2. Extracts clean content from all pages
-    3. Uses Gemini AI to extract structured clinic information
-    4. Returns comprehensive clinic data
+    3. Uses Gemini AI to extract structured business information
+    4. Returns comprehensive business data
 
     The extraction includes:
     - Business name, phone, address, email
     - Business hours
     - Services offered
-    - Staff information
-    - FAQs
-    - Policies
+    - Team information
+    - Specialties
     - Additional information
     """
     logger.info(f"POST /v1/scraper/crawl - Crawling {scrape_request.url}")
@@ -123,7 +122,7 @@ async def crawl_and_extract(scrape_request: ScrapeRequest, request: Request):
 
         # Step 2: Extract structured data using Gemini
         try:
-            clinic_data = await extract_clinic_data(pages_data, gemini_client)
+            business_data = await extract_business_data(pages_data, gemini_client)
         except Exception as e:
             # Return crawled pages count but indicate extraction failed
             return ScrapeResponse(
@@ -138,7 +137,7 @@ async def crawl_and_extract(scrape_request: ScrapeRequest, request: Request):
             success=True,
             url=scrape_request.url,
             pages_crawled=len(pages_data),
-            data=clinic_data,
+            data=business_data,
             error=None,
         )
 

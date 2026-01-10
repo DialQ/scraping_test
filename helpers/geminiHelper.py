@@ -16,12 +16,12 @@ GEMINI_MODEL = "gemini-2.5-flash"
 
 
 # Pydantic models for response schema - Frontend compatible
-class Veterinarian(BaseModel):
-    """Veterinarian information"""
+class Professional(BaseModel):
+    """Professional or key team member information"""
 
     name: str
-    specialties: str
-    acceptingNewPatients: bool = False
+    role: str
+    is_available: bool = True
 
 
 class BusinessHours(BaseModel):
@@ -36,8 +36,8 @@ class BusinessHours(BaseModel):
     sunday: str = ""
 
 
-class ClinicData(BaseModel):
-    """Extracted veterinary clinic data - matches frontend form structure exactly"""
+class BusinessData(BaseModel):
+    """Extracted business data - generalized structure"""
 
     name: str = ""
     phoneNumber: str = ""
@@ -50,12 +50,12 @@ class ClinicData(BaseModel):
     businessHours: BusinessHours = BusinessHours()
     is_24_7: bool = False
     holidayClosures: str = ""
-    veterinarians: List[Veterinarian] = []
-    practiceManager: str = ""
-    headTechnician: str = ""
+    professionals: List[Professional] = []
+    manager: str = ""
+    operationsLead: str = ""
     servicesOffered: List[str] = []
     servicesNotOffered: str = ""
-    speciesTreated: List[str] = []
+    specialties: List[str] = []
 
 
 def get_gemini_client() -> genai.Client:
@@ -76,18 +76,18 @@ def get_gemini_client() -> genai.Client:
     return genai.Client(api_key=api_key)
 
 
-async def extract_clinic_data(
+async def extract_business_data(
     pages_data: List[Dict[str, str]], client: Optional[genai.Client] = None
-) -> ClinicData:
+) -> BusinessData:
     """
-    Extract structured veterinary clinic data from crawled pages using Gemini.
+    Extract structured business data from crawled pages using Gemini.
 
     Args:
         pages_data: List of dicts with 'url' and 'content' keys
         client: Optional pre-initialized Gemini client
 
     Returns:
-        ClinicData model with extracted clinic information
+        BusinessData model with extracted business information
     """
     if client is None:
         client = get_gemini_client()
@@ -106,7 +106,7 @@ async def extract_clinic_data(
             config=types.GenerateContentConfig(
                 temperature=0,
                 response_mime_type="application/json",
-                response_schema=ClinicData,  # Use Pydantic model for response schema
+                response_schema=BusinessData,  # Use Pydantic model for response schema
                 thinking_config=types.ThinkingConfig(
                     thinking_budget=0
                 ),  # Disable thinking
@@ -114,13 +114,13 @@ async def extract_clinic_data(
         )
 
         # Use parsed response - Gemini automatically validates against schema
-        extracted_data: ClinicData = response.parsed
+        extracted_data: BusinessData = response.parsed
         return extracted_data
 
     except Exception as e:
         logger.error(f"Error calling Gemini API: {e}", exc_info=True)
-        # Return empty ClinicData model on error
-        return ClinicData()
+        # Return empty BusinessData model on error
+        return BusinessData()
 
 
 def _prepare_content_for_extraction(pages_data: List[Dict[str, str]]) -> str:
@@ -171,14 +171,14 @@ def _build_extraction_prompt() -> str:
     Returns:
         Structured prompt string
     """
-    return """You are a data extraction specialist. Extract structured information about a veterinary clinic from the provided website content.
+    return """You are a data extraction specialist. Extract structured information about a business from the provided website content.
 
-Extract all available information about the clinic. The data will be validated against a strict schema and sent directly to a frontend form.
+Extract all available information about the business. The data will be validated against a strict schema and sent directly to a frontend form.
 
 IMPORTANT: Return data in this exact structure - it will populate a form with ZERO transformation.
 
 INSTRUCTIONS:
-1. name: Extract the full business name of the veterinary clinic (string)
+1. name: Extract the full business name (string)
    - If none found, return empty string ""
 
 2. phoneNumbers: Extract ALL phone numbers as a comma-separated string
@@ -199,10 +199,11 @@ INSTRUCTIONS:
 6. pincode: Extract the ZIP/postal code (string)
    - If none found, return empty string ""
 
-7. website: Extract the clinic's website URL (string)
+7. website: Extract the business's website URL (string)
    - If none found, return empty string ""
 
-8. email Extract one or more email address
+8. email: Extract the primary email address (string)
+   - If none found, return empty string ""
 
 9. businessHours: Extract business hours as a simple object with day keys
    - Format: Simple strings like "8:00 AM - 6:00 PM", "Closed", or "24/7"
@@ -217,25 +218,24 @@ INSTRUCTIONS:
        "sunday": "Closed"
      }
    - If hours not found for a day, use empty string ""
-   - If clinic is 24/7, still populate hours (frontend will handle is_24_7 flag)
+   - If business is 24/7, still populate hours (frontend will handle is_24_7 flag)
 
-10. is_24_7: Set to true if clinic operates 24/7, otherwise false (boolean)
+10. is_24_7: Set to true if business operates 24/7, otherwise false (boolean)
     - Default: false
 
 11. holidayClosures: Extract information about holiday closures (string)
-    - Format: "Closed for Thanksgiving (Nov 28). Closed at 12 PM on Christmas Eve (Dec 24)."
+    - Format: "Closed for Thanksgiving. Limited hours on Christmas Eve."
     - If none found, return empty string ""
 
-12. veterinarians: Extract ALL veterinarians as an array of objects
-    - Structure: {"name": "Dr. Name, DVM", "specialties": "Area of expertise", "acceptingNewPatients": true/false}
-    - acceptingNewPatients defaults to false if not specified
+12. professionals: Extract key team members or professionals as an array of objects
+    - Structure: {"name": "Full Name", "role": "Title/Role", "is_available": true/false}
+    - is_available defaults to true if not specified
     - If none found, return empty array []
 
-13. practiceManager: Extract the practice manager's name (string)
+13. manager: Extract the manager or business owner's name (string)
     - If none found, return empty string ""
 
-14. headTechnician: Extract the head technician's name and credentials (string)
-    - Format: "Name, CVT" or "Name, LVT"
+14. operationsLead: Extract the operations lead or technical head's name (string)
     - If none found, return empty string ""
 
 15. servicesOffered: Extract ALL services offered as an array of strings
@@ -243,18 +243,18 @@ INSTRUCTIONS:
     - If none found, return empty array []
 
 16. servicesNotOffered: Extract services explicitly NOT offered (string)
-    - Format: "Boarding, Grooming, Mobile veterinary visits"
+    - Format: "Boarding, Grooming, Delivery"
     - Comma-separated if multiple
     - If none found, return empty string ""
 
-17. speciesTreated: Extract ALL species/animal types treated as an array of strings
-    - Format: ["Dogs", "Cats", "Rabbits", "Birds"]
+17. specialties: Extract business specialties, categories, or focus areas as an array of strings
+    - Format: ["Category 1", "Category 2"]
     - If none found, return empty array []
 
 EMPTY VALUES STRATEGY:
 - Arrays: Use empty array [] if no data found
 - Strings: Use empty string "" if no data found
-- Booleans: Use false as default
+- Booleans: Use false as default (except for professionals.is_available which defaults to true)
 - businessHours object: Return full structure with empty strings for each day if no data found
 
 Only include information explicitly stated on the website.
