@@ -239,7 +239,53 @@ INSTRUCTIONS:
     - If none found, return empty string ""
 
 15. servicesOffered: Extract ALL services offered as an array of strings
-    - Format: ["Service 1", "Service 2", "Service 3"]
+      - IMPORTANT: Map extracted services to the following STANDARD LIST if possible.
+    - If a service on the website matches a standard service (even if named slightly differently), use the STANDARD NAME.
+    - If it does not match any, use the name found on the website.
+    - STANDARD SERVICE LIST:
+      [
+        "Wellness & Preventive Exams",
+        "Puppy & Kitten Care Programs",
+        "Vaccinations & Titers",
+        "Flea, Tick & Heartworm Prevention",
+        "Microchipping",
+        "Senior Pet Wellness",
+        "Nutrition & Diet Counseling",
+        "Sick Pet Examinations",
+        "Pain Management",
+        "Internal Medicine Consults",
+        "Anal Gland Expression",
+        "In-House Laboratory",
+        "Radiology (X-rays)",
+        "Ultrasound",
+        "Allergy Testing",
+        "Cytology (Ear, Skin)",
+        "Urinalysis/Fecal Exam",
+        "Cardiac & Respiratory Diagnostics",
+        "Spay/Neuter Surgery",
+        "Soft Tissue Surgery",
+        "Orthopedic Surgery",
+        "Dental Cleaning & Extractions",
+        "Dermatology",
+        "Ophthalmology",
+        "Oncology",
+        "Behavioral Counseling",
+        "Urgent Care Appointments",
+        "Emergency Stabilization",
+        "IV Fluid Therapy",
+        "Post-Surgical Recovery Monitoring",
+        "Isolation & Infectious Disease Care",
+        "Quality of Life/Euthanasia Consult",
+        "Hospice & Palliative Care",
+        "Humane Euthanasia Services",
+        "Laser Therapy",
+        "Acupuncture",
+        "Physical Therapy / Rehabilitation",
+        "Homeopathy",
+        "Medication Refill Pick-up",
+        "Prescription Diet Pick-up"
+      ]
+    - Format: ["Standard Name 1", "Standard Name 2", "Other Found Name"]
     - If none found, return empty array []
 
 16. servicesNotOffered: Extract services explicitly NOT offered (string)
